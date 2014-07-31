@@ -1,0 +1,161 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2012, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the 
+    distribution for a full listing of individual contributors.
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,  
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <!-- the f:view above prevents an erroneous <html> within <body> coming from portal. -->
+    <!-- <h:head /> and <h:body> in the following are always needed otherwise JSF Facelets won't work -->
+    <h:head />
+    <h:body styleClass="jsf2HelloWorldPortlet">
+        <h:outputStylesheet library="css" name="jsf2-hello-world-portlet.css" />
+     <h:messages></h:messages>
+     <h:outputText value="Inserir Novo Documento"/>
+
+     
+     <h:form  id ="form_editar_d" style="width:580px">
+		<h:commandButton id="btnVoLtar"  actionListener="#{maloteBean.navegar}" value="Anterior"/>
+		<h:commandButton id="btnAvancar" actionListener="#{maloteBean.navegar}" value="Proximo"/>
+		<h:panelGrid id="grid1" columns="2" columnClasses="coluna3,coluna4">	
+			<h:outputText id="otMalote" value="Malote:" />
+			<h:outputText id="otMaloteNum"  value="#{maloteBean.malote.numMalote}"/>
+
+			<h:outputText id="otData" value="Data:" />
+			<h:outputText id="otDtMalote"  value="#{maloteBean.malote.dtEnvio}"/>
+
+			<h:outputText id="criador_O" value="Unidade:"/>
+			<h:outputText id="criador_I" value="#{funcionarioBean.secao}"/>
+					
+			<h:outputText id="otTipoRem" value="Tipo Remessa:"/>			
+			<h:selectOneRadio value="#{maloteBean.tipoRemessa}" valueChangeListener="#{maloteBean.selectRemessa}" 
+			  readonly="#{not empty maloteBean.malote.codigo}" onclick="submit();">
+				<f:selectItem itemLabel="Malote Externo" itemValue="1"/>
+				<f:selectItem itemLabel="Malote Interno" itemValue="2"/>
+				<f:selectItem itemLabel="Carta" itemValue="3"/>
+			</h:selectOneRadio>
+	    </h:panelGrid>		
+	    <h:panelGrid id="grid2" columns="1" rendered="#{maloteBean.tipoRemessa lt 3}">
+		  <h:panelGrid id="grid21" columns="2" columnClasses="coluna3,coluna4">	
+
+			<h:outputText id="otTipodoc1" value="Tipo Documento:"  />
+			<h:selectOneMenu id="soTipoDoc1" value="#{maloteBean.documento.tipoDocumento}" converter="conversorTipoDocumento">
+				<f:selectItems id="siTipoDoc1" value="#{maloteBean.tiposDocumento}" />				
+			</h:selectOneMenu>
+
+			<h:outputText id="otNumDoc1" value="Num Documento:" />
+			<h:inputText  id="itNumDoc1" maxlength="50" value="#{maloteBean.documento.numDoc}" style="width:400px"/>
+			
+			<h:outputText id="otDestino" value="Destino:"  rendered="#{maloteBean.tipoRemessa lt 3}" />
+			<h:selectOneMenu id="soDestinatario" value="#{maloteBean.unidSelecionada}" converter="conversorLocalidade" style="width:400px" rendered="#{maloteBean.tipoRemessa lt 3}">
+				<f:selectItems id="siDestinatario" value="#{maloteBean.listaDestinatario}" />
+			</h:selectOneMenu>
+
+			<h:outputText id="otDescDestinatario1" value="Destinatario:" rendered="#{maloteBean.tipoRemessa eq 1}"/>
+			<h:inputText  id="itDescDestinatario1" maxlength="250" value="#{maloteBean.documento.descExterno}" style="width:400px" rendered="#{maloteBean.tipoRemessa eq 1}"/>
+
+
+			<h:outputText id="otCuidados1" value="Aos Cuidados:" />
+			<h:inputText  id="itCuidados1" maxlength="250" value="#{maloteBean.documento.aosCuidados}" style="width:400px"/>			
+		  </h:panelGrid>
+		</h:panelGrid>
+
+	    <h:panelGrid id="cartaGrid" columns="1" rendered="#{maloteBean.tipoRemessa eq 3}">
+		  <h:panelGrid id="intGrid2" columns="2" columnClasses="coluna3,coluna4">	
+			
+			<h:outputText id="otNumCorreio" value="Num Correio:" />
+			<h:panelGroup id="correioLinha2">
+				<h:inputText  id="itNumCorreio" maxlength="50" value="#{maloteBean.carta.numCorreio}"  style="width:220px" onkeyup="this.value = this.value.toUpperCase()"/>
+				<h:outputText id="otPeso" value="Peso:" style="margin-left:90px"/>
+				<h:inputText  id="itPeso" maxlength="50" value="#{maloteBean.carta.peso}" style="width:60px"/>
+			</h:panelGroup>
+			
+			<h:outputText id="otTipodoc" value="Tipo Documento:" />
+			<h:panelGroup id="correioLinha21">
+				<h:selectOneMenu id="soTipoDoc" value="#{maloteBean.carta.tipoDocumento}" converter="conversorTipoDocumento" style="width:220px">
+					<f:selectItems id="siTipoDoc" value="#{maloteBean.tiposDocumento}" />
+				</h:selectOneMenu>
+			
+				<h:selectBooleanCheckbox title="AR" id="bcbAR" value="#{maloteBean.carta.avisoReceb}" style="margin-left:25px"/>
+				<h:outputText value="AR" id="txtAr" style="width:10px"/>
+			
+				<h:selectBooleanCheckbox title="MP" id="bcbMP" value="#{maloteBean.carta.maoPropria}" style="margin-left:20px"/>
+				<h:outputText value="MP" id="txtMp" style="width:10px"/>
+			
+			</h:panelGroup>
+
+			
+			<h:outputText id="otNumDoc" value="Num Documento:" />
+			<h:panelGroup id="correioLinha3">
+			    <h:inputText  id="itNumDoc" maxlength="50" value="#{maloteBean.carta.numDoc}" style="width:220px"/>
+				<h:outputText id="otCep" value="Cep:" style="margin-left:95px"/>
+				<h:inputText  id="itCep" maxlength="50" valueChangeListener="#{maloteBean.consultarCep}" value="#{maloteBean.carta.cep}" style="width:60px" onblur="submit();"/>
+			</h:panelGroup>
+
+			
+			<h:outputText id="otDescDestinatario" value="Destinatario:" />
+			<h:inputText  id="itDescDestinatario" maxlength="250" value="#{maloteBean.carta.descExterno}" style="width:400px" onkeyup="this.value = this.value.toUpperCase()" />
+
+			<h:outputText id="otLogradouro" value="Endereço:" />
+			<h:inputText  id="itLogradouro" maxlength="250" value="#{maloteBean.carta.logradouro}" style="width:400px" onkeyup="this.value = this.value.toUpperCase()"/>
+
+			<h:outputText id="otBairro" value="Bairro:" />
+			<h:inputText  id="itBairro" maxlength="250" value="#{maloteBean.carta.bairro}" style="width:400px" onkeyup="this.value = this.value.toUpperCase()"/>
+
+			<h:outputText id="otCidade" value="Cidade:" />
+
+			<h:panelGroup id="correioLinha4">
+				<h:inputText  id="itCidade" maxlength="100" value="#{maloteBean.carta.cidade}" style="width:220px" onkeyup="this.value = this.value.toUpperCase()"/>
+				<h:outputText id="otEstado" value="Estado:" style="margin-left:81px"/>
+				<h:inputText  id="itEstado" value="#{maloteBean.carta.uf}" onkeyup="this.value = this.value.toUpperCase()" style="width:60px"/>
+			</h:panelGroup>
+
+			<h:outputText id="otCuidados" value="Aos Cuidados:" />
+			<h:inputText  id="itCuidados" maxlength="250" value="#{maloteBean.carta.aosCuidados}" />			
+		  </h:panelGrid>
+		</h:panelGrid>
+
+
+		<h:panelGrid id="grid" columns="2">
+			<h:commandButton id="buttonSalvar" value="Salvar" action="#{maloteBean.salvar}"/>
+        	<h:commandButton id="buttonVoltar" value="Sair"   action="#{maloteBean.telaPrincipal}" immediate="true"/>
+		</h:panelGrid>
+
+   		<h:dataTable  value="#{maloteBean.listaDocumento}" var="_doc" styleClass="Bordatabela" headerClass="portlet-section-header" rowClasses="portlet-section-alternate,portlet-section-body" style="margin-top:9px;width:580px;">
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
+				</f:facet>
+				<h:outputText  value="#{_doc.dtMovimento}">
+					<f:converter converterId="ConversorDeData"/>
+				</h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Nº Documento" style="FONT-WEIGHT: bold;"></h:outputText>
+				</f:facet>
+				<h:outputText  value="#{_doc.documento.numDoc}"></h:outputText>
+			</h:column>
+
+			<h:column>
+				<f:facet name="header">
+					<h:outputText value="Destino" style="FONT-WEIGHT: bold;"></h:outputText>
+				</f:facet>
+				<h:outputText  value="#{_doc.documento.destinatario.descricao}"></h:outputText>
+			</h:column>													
+   		</h:dataTable>	       		
+
+	</h:form>
+    </h:body>
+</f:view>

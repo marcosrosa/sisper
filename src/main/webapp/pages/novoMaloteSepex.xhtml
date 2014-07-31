@@ -1,0 +1,84 @@
+<!--
+    JBoss, Home of Professional Open Source
+    Copyright 2012, Red Hat, Inc. and/or its affiliates, and individual
+    contributors by the @authors tag. See the copyright.txt in the 
+    distribution for a full listing of individual contributors.
+    
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,  
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+ -->
+<f:view xmlns="http://www.w3.org/1999/xhtml"  xmlns:f="http://java.sun.com/jsf/core" xmlns:h="http://java.sun.com/jsf/html">
+    <!-- the f:view above prevents an erroneous <html> within <body> coming from portal. -->
+    <!-- <h:head /> and <h:body> in the following are always needed otherwise JSF Facelets won't work -->
+    <h:head />
+    <h:body styleClass="jsf2HelloWorldPortlet">
+        <h:outputStylesheet library="css" name="jsf2-hello-world-portlet.css" />
+	<h:messages></h:messages>
+        <h:form id="frmNovoMaloteSepex" style="width:580px" styleClass="portlet-body">
+    	    <h:messages styleClass="errorMessage" showSummary="false" showDetail="true"/>          
+			<h:outputText value="Faça o Login na Intranet antes de utilizar esse Sistema !" rendered="#{!funcionarioBean.usuarioLogado}"/>	   		
+
+	   		<div id="section1"  class="section">
+				<h:outputText>Seleção do Destinatário do Malote:</h:outputText>
+			</div>
+				
+			<h:selectOneMenu id="soDestinatario" value="#{maloteBean.malote.destino}" 
+			    valueChangeListener="#{maloteBean.seletorDestino}"			    
+			    converter="conversorLocalidade" style="width:400px"
+			    onchange="submit()">
+				<f:selectItems id="siDestinatario" value="#{maloteBean.listaDestinatario}" />
+			</h:selectOneMenu>
+			
+			<h:commandButton id="btnNovoMaloteSepex" value="Novo Malote" action="#{maloteBean.insereDocSepex}"/>
+			
+			<!-- deve listar somente os malotes do destinatario selecionado pend  fechamento sepex -->
+	   		<h:dataTable value="#{maloteBean.listaMalotesAbertosDestinatario}" var="_vwMaloteR" 
+	   		   styleClass="Bordatabela" headerClass="portlet-section-header" rowClasses="portlet-section-alternate,portlet-section-body" 
+	   		   style="margin-top:9px;width:580px;">
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
+					</f:facet>
+					<h:outputText  value="#{_vwMaloteR.dtEnvio}">
+						<f:converter converterId="ConversorDeData"/>
+					</h:outputText>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Nº Malote" style="FONT-WEIGHT: bold;"></h:outputText>
+					</f:facet>
+					<h:outputText  value="#{_vwMaloteR.numMalote}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Destino" style="FONT-WEIGHT: bold;"></h:outputText>
+					</f:facet>
+					<h:outputText  value="#{_vwMaloteR.destino.descricao}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Qtd Documentos" style="FONT-WEIGHT: bold;"></h:outputText>
+					</f:facet>
+					<h:outputText  value="#{_vwMaloteR.qtdDocumentos}"/>
+				</h:column>
+				<h:column>
+					<f:facet name="header">
+						<h:outputText value="Ação" style="FONT-WEIGHT: bold;"></h:outputText> 
+					</f:facet>
+					<h:commandLink  action="insereDocSepex" actionListener="#{maloteBean.inserirDocsMalote}">
+						<h:outputText value="Inserir"/>
+						<f:param id="maloteSepexId" name="idMaloteSepex" value="#{_vwMaloteR.codigo}"/>
+					</h:commandLink>
+				</h:column>
+	   		</h:dataTable>	    	   			
+       </h:form>
+
+    </h:body>
+</f:view>
