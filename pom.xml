@@ -22,7 +22,7 @@
     <groupId>br.jus.jfes</groupId>
     <artifactId>sisper-portlet</artifactId>
     <name>sisper-portlet</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>war</packaging>
     <description>Portlet para migraçao aplicacao sisper.</description>
     <url>http://www.gatein.org</url>
