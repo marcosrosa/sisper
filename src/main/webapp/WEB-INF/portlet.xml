@@ -51,6 +51,13 @@
             <title>Sisper Portlet</title>
             <keywords>Intranet-es</keywords>
         </portlet-info>
+        <portlet-preferences>
+        	<preference>
+        		<name>GrupoSisper</name>
+        		<value>usuarios_sisper</value>
+        		<read-only>false</read-only>
+        	</preference>
+        </portlet-preferences>        
         <container-runtime-option>
             <name>org.gatein.pc.remotable</name>
             <value>true</value>
