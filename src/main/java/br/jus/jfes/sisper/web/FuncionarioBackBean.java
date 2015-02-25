@@ -23,7 +23,7 @@ import br.jus.jfes.sisper.session.LocalidadeManager;
 public class FuncionarioBackBean extends BaseAction {
 	private static Logger logger = Logger.getLogger(FuncionarioBackBean.class);	
 	
-	private String usuarioFuncionario;
+	private String usuarioLogin;
 	private String login;
 	private String nome;
 	private String matricula;
@@ -40,15 +40,17 @@ public class FuncionarioBackBean extends BaseAction {
 	
 	@PostConstruct
 	public void inicializador() {
-		usuarioFuncionario = "nulo";
+		usuarioLogin = "nulo";
 	}
 	
 	public String apresFuncionario() {
 		//recupera dados a partir do contexto de secao do usuario
 		PortletRequest pq = this.getPortletRequest();
 
+		//  verifica se usuario Logado.
 		if(pq.getRemoteUser()!=null) {
-			if(!pq.getRemoteUser().equals(usuarioFuncionario)) {
+			// e o mesmo usuario ?
+			if(!pq.getRemoteUser().equals(usuarioLogin)) {
 				///Session session = openRHSession();
 				login = pq.getRemoteUser();			
 				logger.info("verificando usuario logado.:"+login);
@@ -69,7 +71,7 @@ public class FuncionarioBackBean extends BaseAction {
 			//	somente para teste
 			//  if (lotacao.getCodigo().equals(1015l)) 
             //      lotacao.setCodigo(731l); 
-				usuarioFuncionario = pq.getRemoteUser();
+				usuarioLogin = pq.getRemoteUser();
 				usuarioLogado=true;
 			}
 		} else {
