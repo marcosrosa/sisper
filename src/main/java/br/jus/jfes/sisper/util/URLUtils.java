@@ -28,8 +28,18 @@ public class URLUtils {
 	}
 	
 	static public void copiarConteudoURLs(String origem, String destino) throws Exception{
-		URL paginaURL = new URL(origem);
+		/*
+		 * outra forma de leitura da origem. (+ limpo)
+		URL oracle = new URL("http://www.oracle.com/");
+		BufferedReader in = new BufferedReader(
+		new InputStreamReader(oracle.openStream()));
+        String inputLine;
+        while ((inputLine = in.readLine()) != null)
+        	System.out.println(inputLine);
+        in.close();		
+		*/
 		
+		URL paginaURL = new URL(origem);
 		URLConnection paginaCon = paginaURL.openConnection();
 		InputStream paginaIS = paginaCon.getInputStream();
 		
