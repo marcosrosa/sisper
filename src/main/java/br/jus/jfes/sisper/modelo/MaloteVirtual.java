@@ -19,7 +19,8 @@ import javax.persistence.Table;
 public class MaloteVirtual implements Serializable {
 	
 	/**
-	 * 
+	 *  tabela muitos p muitos com malotes enviados e recebidos
+	 *  
 	 */
 	private static final long serialVersionUID = -511795180344961340L;
 	
