@@ -105,7 +105,7 @@
 				<f:facet name="header">
 					<h:outputText value="Conferência" style="FONT-WEIGHT: bold;"></h:outputText> 
 				</f:facet>
-				<h:commandLink  action="conferirMalote" actionListener="#{maloteBean.conferirMalote}">
+				<h:commandLink  action="/pages/conferirMalote.xhtml" actionListener="#{maloteBean.conferirMalote}">
 					<h:outputText value="Conferir / Receber"/>
 					<f:param id="maloteSepexId" name="idMaloteSepex" value="#{_vwMaloteR.codigo}"/>
 				</h:commandLink>

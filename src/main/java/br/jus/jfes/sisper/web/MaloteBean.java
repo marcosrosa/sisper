@@ -366,7 +366,7 @@ public class MaloteBean extends BaseAction {
 		preparaNovoItem();
 		atualizaListaDoc();
 		
-		return "novoDocumento";
+		return "/pages/insereDoc.xhtml";
 	}
 	
 	public String novoMaloteSepex() {

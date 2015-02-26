@@ -172,6 +172,12 @@
                 <groupId>org.jboss.as.plugins</groupId>
                 <artifactId>jboss-as-maven-plugin</artifactId>
                 <version>${jboss.as.plugin.version}</version>
+		        <configuration>
+		        	<skip>false</skip>
+					<hostname>172.21.1.13</hostname>
+					<port>10099</port>
+			 		<id>urano-dev</id>
+				</configuration>                               
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

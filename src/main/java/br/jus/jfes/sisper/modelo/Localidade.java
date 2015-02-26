@@ -16,6 +16,11 @@ import javax.persistence.Id;
 @Table(schema="gestao_sjes",name="localidade")
 public class Localidade implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3252341440386522634L;
+
 	@Id
 	@Column(name="codigo")
 	private Long codigo;
