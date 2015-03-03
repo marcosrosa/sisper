@@ -31,7 +31,7 @@
 				
 			<h:selectOneMenu id="soDestinatario" value="#{maloteBean.malote.destino}" 
 			    valueChangeListener="#{maloteBean.seletorDestino}"			    
-			    converter="conversorLocalidade" style="width:400px"
+			    converter="#{conversorLocalidade}" style="width:400px"
 			    onchange="submit()">
 				<f:selectItems id="siDestinatario" value="#{maloteBean.listaDestinatario}" />
 			</h:selectOneMenu>
@@ -47,7 +47,8 @@
 						<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
 					</f:facet>
 					<h:outputText  value="#{_vwMaloteR.dtEnvio}">
-						<f:converter converterId="ConversorDeData"/>
+						<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+							timeZone="Brazil/East" />
 					</h:outputText>
 				</h:column>
 				<h:column>

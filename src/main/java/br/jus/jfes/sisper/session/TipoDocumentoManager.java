@@ -37,7 +37,7 @@ public class TipoDocumentoManager extends BaseDAO<TipoDocumento, Long> {
 	
 	public List<TipoDocumento> buscaTipos(){
 		Query q = em.createQuery("from "
-				+TipoDocumento.class.getName()+" as tpd"
+				+TipoDocumento.class.getName()+" as t "
 				+expressaoOrderBy);
 		List<TipoDocumento> ltd = q.getResultList();
 		return ltd;

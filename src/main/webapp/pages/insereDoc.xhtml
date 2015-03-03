@@ -49,7 +49,7 @@
 		  <h:panelGrid id="grid21" columns="2" columnClasses="coluna3,coluna4">	
 
 			<h:outputText id="otTipodoc1" value="Tipo Documento:"  />
-			<h:selectOneMenu id="soTipoDoc1" value="#{maloteBean.documento.tipoDocumento}" converter="conversorTipoDocumento">
+			<h:selectOneMenu id="soTipoDoc1" value="#{maloteBean.documento.tipoDocumento}" converter="#{tipoDocConverter}">
 				<f:selectItems id="siTipoDoc1" value="#{maloteBean.tiposDocumento}" />				
 			</h:selectOneMenu>
 
@@ -57,13 +57,12 @@
 			<h:inputText  id="itNumDoc1" maxlength="50" value="#{maloteBean.documento.numDoc}" style="width:400px"/>
 			
 			<h:outputText id="otDestino" value="Destino:"  rendered="#{maloteBean.tipoRemessa lt 3}" />
-			<h:selectOneMenu id="soDestinatario" value="#{maloteBean.unidSelecionada}" converter="conversorLocalidade" style="width:400px" rendered="#{maloteBean.tipoRemessa lt 3}">
+			<h:selectOneMenu id="soDestinatario" value="#{maloteBean.unidSelecionada}" converter="#{conversorLocalidade}" style="width:400px" rendered="#{maloteBean.tipoRemessa lt 3}">
 				<f:selectItems id="siDestinatario" value="#{maloteBean.listaDestinatario}" />
 			</h:selectOneMenu>
 
 			<h:outputText id="otDescDestinatario1" value="Destinatario:" rendered="#{maloteBean.tipoRemessa eq 1}"/>
 			<h:inputText  id="itDescDestinatario1" maxlength="250" value="#{maloteBean.documento.descExterno}" style="width:400px" rendered="#{maloteBean.tipoRemessa eq 1}"/>
-
 
 			<h:outputText id="otCuidados1" value="Aos Cuidados:" />
 			<h:inputText  id="itCuidados1" maxlength="250" value="#{maloteBean.documento.aosCuidados}" style="width:400px"/>			
@@ -82,7 +81,7 @@
 			
 			<h:outputText id="otTipodoc" value="Tipo Documento:" />
 			<h:panelGroup id="correioLinha21">
-				<h:selectOneMenu id="soTipoDoc" value="#{maloteBean.carta.tipoDocumento}" converter="conversorTipoDocumento" style="width:220px">
+				<h:selectOneMenu id="soTipoDoc" value="#{maloteBean.carta.tipoDocumento}" converter="#{tipoDocConverter}" style="width:220px">
 					<f:selectItems id="siTipoDoc" value="#{maloteBean.tiposDocumento}" />
 				</h:selectOneMenu>
 			
@@ -137,7 +136,8 @@
 					<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
 				</f:facet>
 				<h:outputText  value="#{_doc.dtMovimento}">
-					<f:converter converterId="ConversorDeData"/>
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+						timeZone="Brazil/East" />
 				</h:outputText>
 			</h:column>
 

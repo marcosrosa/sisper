@@ -162,12 +162,13 @@ public class MaloteManager extends BaseDAO<Malote, Long> {
 		return  listaRetorno;
 	}
 
-	@SuppressWarnings("unchecked")
+
 	public List<MaloteView> buscaMalotesFecharSepex(Localidade oDestino) {
 		// TODO Auto-generated method stub
 		logger.info("buscaMaloteFecharSepex: conferencia pelo destinatario.");
 		Query q;
 		if (null != oDestino) {
+			// malotes conferidos pelo proprio setor-destinatario.
 			q = em.createQuery("from "
 					+MaloteView.class.getName()+" as m "
 					+" join fetch m.destino r " +
@@ -178,13 +179,14 @@ public class MaloteManager extends BaseDAO<Malote, Long> {
 					" order by m.dtEnvio, m.destino.descricao");
 					q.setParameter("pDestino", oDestino);
 		} else {
-					q = em.createQuery("from "
-							+MaloteView.class.getName()+" as m "
-							+" join fetch m.destino r " +
-							"  where m.dtRecepcao is null " +
-							"  and m.tipoMalote > 0 " +
-							"  and m.fechado = false " +
-							" order by m.dtEnvio, m.destino.descricao");			
+			// malotes conferidos pela sepex
+			q = em.createQuery("from " +
+			    MaloteView.class.getName()+" as m " + 
+				" join fetch m.destino r " + 
+				"  where m.dtRecepcao is null " +
+				"  and m.tipoMalote > 0 " +
+				"  and m.fechado = false " +
+				" order by m.dtEnvio, m.destino.descricao");			
 		}
 		return (List<MaloteView>) q.getResultList();
 	}
@@ -221,7 +223,7 @@ public class MaloteManager extends BaseDAO<Malote, Long> {
 	public Integer proximoNumeroMalote(Long localidade) {
 		logger.info("<<<proximo num malote>>>");
 		StringBuilder sbQuery = new StringBuilder("select max(numMalote) from Malote" );
-		sbQuery.append(" where trunc(dtEnvio) = :pDataHoje ");
+		sbQuery.append(" where dtEnvio > :pDataHoje ");
 		sbQuery.append(" and cod_remetente = :pLocalidade");
 		Query q = em.createQuery(sbQuery.toString());
 		q.setParameter("pDataHoje", dataHoje().getTime());
@@ -230,7 +232,7 @@ public class MaloteManager extends BaseDAO<Malote, Long> {
 		Integer result = 0;
 		try {
 			result = (Integer) q.getSingleResult();
-			result++;
+			++result;
 		}
 		catch (Exception ex) {
 			result = new Integer(1);

@@ -54,6 +54,9 @@ public class MaloteBean extends BaseAction {
 	@EJB
 	private LocalidadeManager localidadeManager;
 	
+	@EJB
+	private TipoDocumentoManager tipoDocManager;
+	
 //	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
 	private String docSelecionado;
@@ -146,8 +149,8 @@ public class MaloteBean extends BaseAction {
 		
 	public SelectItem[] getTiposDocumento() {
 		if (tiposDocumento == null) {
-			TipoDocumentoManager tipoDocDAO = new TipoDocumentoManager();
-			List<TipoDocumento> tipoDocs = tipoDocDAO.buscaTipos();
+			
+			List<TipoDocumento> tipoDocs = tipoDocManager.buscaTipos();
 			tiposDocumento = new SelectItem[tipoDocs.size()];
 			int x=0;
 			for(TipoDocumento tipoDoc : tipoDocs) {
@@ -371,7 +374,7 @@ public class MaloteBean extends BaseAction {
 	
 	public String novoMaloteSepex() {
 		this.malote = novoMalote(true);
-		return "novoMaloteSepex";
+		return "/pages/novoMaloteSepex.xhtml";
 	}
 	
 	public String insereDocSepex() {
@@ -421,7 +424,7 @@ public class MaloteBean extends BaseAction {
 	
 	public String telaPrincipal() {
 		atualizaListaDoc(); //??
-		return "principal";
+		return "/pages/main.xhtml";
 	}
 	
 

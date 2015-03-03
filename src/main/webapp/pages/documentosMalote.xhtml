@@ -43,7 +43,8 @@
 					<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
 				</f:facet>
 				<h:outputText  value="#{_doc.dtMovimento}">
-					<f:converter converterId="ConversorDeData"/>
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+						timeZone="Brazil/East" />
 				</h:outputText>
 			</h:column>
 

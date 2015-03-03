@@ -71,7 +71,7 @@
 				<f:facet name="header">
 					<h:outputText value="Novo Documento" style="FONT-WEIGHT: bold;"></h:outputText> 
 				</f:facet>
-				<h:commandLink  action="novoDocumento" actionListener="#{maloteBean.novoDocumento}">
+				<h:commandLink  action="/pages/insereDoc" actionListener="#{maloteBean.novoDocumento}">
 					<h:outputText value="Inserir Documento"/>
 					<f:param id="maloteId" name="idMalote" value="#{_vwMalote.codigo}"/>
 				</h:commandLink>

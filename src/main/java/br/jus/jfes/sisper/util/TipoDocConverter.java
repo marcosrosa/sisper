@@ -1,5 +1,7 @@
 package br.jus.jfes.sisper.util;
 
+import java.io.Serializable;
+
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
@@ -13,8 +15,13 @@ import br.jus.jfes.sisper.session.TipoDocumentoManager;
 
 @ManagedBean
 @RequestScoped
-public class TipoDocConverter implements Converter {
+public class TipoDocConverter implements Converter, Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	
 	@EJB
 	private TipoDocumentoManager tipoDocManager;
 

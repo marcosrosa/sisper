@@ -41,7 +41,7 @@
         <h:panelGrid id="grid21" columns="2" columnClasses="coluna3,coluna4">	
 
 			<h:outputText id="otTipodoc1" value="Tipo Documento:"  />
-			<h:selectOneMenu id="soTipoDoc1" value="#{maloteBean.documento.tipoDocumento}" converter="conversorTipoDocumento">
+			<h:selectOneMenu id="soTipoDoc1" value="#{maloteBean.documento.tipoDocumento}" converter="#{tipoDocConverter}">
 				<f:selectItems id="siTipoDoc1" value="#{maloteBean.tiposDocumento}" />				
 			</h:selectOneMenu>
 
@@ -49,7 +49,7 @@
 			<h:inputText  id="itNumDoc1" maxlength="50" value="#{maloteBean.documento.numDoc}" style="width:400px"/>
 
 			<h:outputText id="otDestino" value="Remetente:" />
-			<h:selectOneMenu id="soRemetente" value="#{maloteBean.unidSelecionada}" converter="conversorLocalidade" style="width:400px" onchange="submit();" immediate="true">
+			<h:selectOneMenu id="soRemetente" value="#{maloteBean.unidSelecionada}" converter="#{conversorLocalidade}" style="width:400px" onchange="submit();" immediate="true">
 				<f:selectItems id="siRemetente" value="#{maloteBean.listaDestinatario}" />
 			</h:selectOneMenu>
 			
@@ -75,7 +75,8 @@
 					<h:outputText value="Data" style="FONT-WEIGHT: bold;"></h:outputText>
 				</f:facet>
 				<h:outputText  value="#{_doc.dtMovimento}">
-					<f:converter converterId="ConversorDeData"/>
+					<f:convertDateTime pattern="dd/MM/yyyy" locale="pt_BR"
+						timeZone="Brazil/East" />
 				</h:outputText>
 			</h:column>
 
