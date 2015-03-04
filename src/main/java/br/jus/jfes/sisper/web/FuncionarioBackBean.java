@@ -5,12 +5,10 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.context.FacesContext;
 import javax.portlet.PortletRequest;
 
 import org.jboss.logging.Logger;
 
-import br.gov.trf2.jfes.rh.api.Funcionario;
 import br.gov.trf2.jfes.rh.api.FuncionarioVO;
 import br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO;
 import br.jus.jfes.sisper.modelo.Localidade;
@@ -28,8 +26,7 @@ public class FuncionarioBackBean extends BaseAction {
 	private Localidade lotacao;
 	private boolean usuarioLogado;
 	
-	// para outras apps -> "ejb:rh-modelo-ear/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO"
-	// config abaixo pra mesmo ear-> "java:app/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO"
+	// loockup em outro app no mesmo servidor.
 	@EJB(lookup="ejb:rh-modelo-ear/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO")
 	private IFuncionarioDAO funcionarioManager;
 	
