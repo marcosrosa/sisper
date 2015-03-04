@@ -1,5 +1,6 @@
 package br.jus.jfes.sisper.web;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -56,6 +57,9 @@ public class MaloteBean extends BaseAction {
 	
 	@EJB
 	private TipoDocumentoManager tipoDocManager;
+	
+	@EJB 
+	private CepManager cepManager;
 	
 //	private SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	
@@ -159,7 +163,6 @@ public class MaloteBean extends BaseAction {
 		}
 		return tiposDocumento;
 	}
-
 	
 	public SelectItem[] getListaDestinatario() {
 		logger.info("xxx listaDestinatario->tipoRemessa: " + tipoRemessa);
@@ -218,13 +221,16 @@ public class MaloteBean extends BaseAction {
 	}
 			
 		
-	public void novoDocumento(ActionEvent ae) {
-		UIParameter val = (UIParameter) ae.getComponent().findComponent("maloteId");
-		Long id = Long.valueOf(val.getValue().toString());
-		if (id==null) id = new Long(-100);
-		carregarMalote(id);
+	public String novoDocumento(Long codMalote) {
+		logger.info("novoDocumento - Action");
+		//UIParameter val = (UIParameter) ae.getComponent().findComponent("maloteId");
+		//Long id = Long.valueOf(val.getValue().toString());
+		if (codMalote==null) codMalote = new Long(-100);
+		carregarMalote(codMalote);
 		preparaNovoItem();
-		atualizaListaDoc(); 
+		//atualizaListaDoc(); 
+		listaDocumento = new ArrayList(malote.getDocsMalote());
+		return "/pages/insereDoc.xhtml";
 	}
 	
 	public void conferirMalote(ActionEvent ae) {
@@ -320,7 +326,8 @@ public class MaloteBean extends BaseAction {
 		if (codMalote.compareTo(0L) > 0)  {
 			// carregar o malote com o item clicado - 
 			logger.info("deve carregar o malote Nr.: "+codMalote);
-     	    malote = maloteDAO.load(codMalote);
+     	    //malote = maloteDAO.load(codMalote);
+			malote = maloteDAO.buscaMaloteComDocumentos(codMalote);
 		} 		
 	}
 	
@@ -592,9 +599,8 @@ public class MaloteBean extends BaseAction {
 			String cepConsulta = (String) vce.getNewValue();
 			logger.info("consultar cep::: "+cepConsulta);
 			if (!cepConsulta.isEmpty()) {
-				CepManager cepDAO = new CepManager();
 				
-				TabCep cep = cepDAO.load(cepConsulta);
+				TabCep cep = cepManager.load(cepConsulta);
 				
 				if (cep != null) {
 					carta.setLogradouro(cep.getLogradouro());

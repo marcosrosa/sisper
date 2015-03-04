@@ -39,13 +39,13 @@ public class DocumentoManager extends BaseDAO<Documento, Long> {
 		super(Documento.class);
 	}
 		
-	@SuppressWarnings("unchecked")
 	public List<MaloteVirtual> buscaDocumentos(Malote maloteid){
 		logger.info("<<<buscar os documentos>>> "+maloteid.getCodigo());
 		List<MaloteVirtual> listaRetorno = null;
 		if (maloteid != null ) {
 			// retorna documentos do malote
 			listaRetorno = new ArrayList( maloteid.getDocsMalote() );
+			
 			int qtd = maloteid.getDocsMalote().size();
 			logger.info("buscaDocumetnos->qtd doc malote>>>"+qtd);
 		}

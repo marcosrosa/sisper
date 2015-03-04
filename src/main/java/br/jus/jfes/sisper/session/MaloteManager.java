@@ -313,6 +313,12 @@ public class MaloteManager extends BaseDAO<Malote, Long> {
 				+expressaoOrderBy);
 		return q.getResultList();
 	}
+	
+	public Malote buscaMaloteComDocumentos(Long maloteId) {
+		Malote loadMalote = load(maloteId);
+		logger.info("busMaloteComDocumentos size: "+loadMalote.getDocsMalote().size());
+		return loadMalote;
+	}
 
 
 	

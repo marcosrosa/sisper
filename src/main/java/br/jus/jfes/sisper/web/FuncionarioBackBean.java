@@ -10,10 +10,10 @@ import javax.portlet.PortletRequest;
 
 import org.jboss.logging.Logger;
 
-//import br.gov.trf2.jfes.intranet.servidor.faces.ServidorBackBean;
+import br.gov.trf2.jfes.rh.api.Funcionario;
+import br.gov.trf2.jfes.rh.api.FuncionarioVO;
+import br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO;
 import br.jus.jfes.sisper.modelo.Localidade;
-//import br.jus.jfes.sisper.modelo.Orgao;
-//import br.jus.jfes.sisper.modelo.TipoRemessa;
 import br.jus.jfes.sisper.session.LocalidadeManager;
 
 
@@ -22,14 +22,18 @@ import br.jus.jfes.sisper.session.LocalidadeManager;
 @SessionScoped
 public class FuncionarioBackBean extends BaseAction {
 	private static Logger logger = Logger.getLogger(FuncionarioBackBean.class);	
+	private static final String emptyStr = "";
 	
-	private String usuarioLogin;
-	private String login;
-	private String nome;
-	private String matricula;
-	private String secao;
+//	private String login;
 	private Localidade lotacao;
 	private boolean usuarioLogado;
+	
+	// para outras apps -> "ejb:rh-modelo-ear/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO"
+	// config abaixo pra mesmo ear-> "java:app/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO"
+	@EJB(lookup="ejb:rh-modelo-ear/rh-modelo-ejb/FuncionarioDAO!br.gov.trf2.jfes.rh.api.session.IFuncionarioDAO")
+	private IFuncionarioDAO funcionarioManager;
+	
+	private FuncionarioVO funcionario;
 		
 	@EJB
 	private LocalidadeManager localidadeManager;
@@ -40,44 +44,35 @@ public class FuncionarioBackBean extends BaseAction {
 	
 	@PostConstruct
 	public void inicializador() {
-		usuarioLogin = "nulo";
+		usuarioLogado = false;
+		consultaFuncionario();
 	}
 	
-	public String apresFuncionario() {
+	private void consultaFuncionario() {
 		//recupera dados a partir do contexto de secao do usuario
-		PortletRequest pq = this.getPortletRequest();
+		PortletRequest pr = this.getPortletRequest();
 
 		//  verifica se usuario Logado.
-		if(pq.getRemoteUser()!=null) {
-			// e o mesmo usuario ?
-			if(!pq.getRemoteUser().equals(usuarioLogin)) {
+		if(pr.getRemoteUser()!=null && pr.getRemoteUser()!=emptyStr) {
+			if(!usuarioLogado) {
 				///Session session = openRHSession();
-				login = pq.getRemoteUser();			
-				logger.info("verificando usuario logado.:"+login);
-				//ServidorBackBean funcionario = new ServidorBackBean();
-				//funcionario.setConta(login);
-				//funcionario.pesquisarPorConta();				
-				nome = "Marcos";  //funcionario.getNome();
-				logger.info("nome:" + nome);
-				matricula = "10724";//funcionario.getMatricula();
-				logger.info("matricula:" + matricula);
-				secao = "SEDIN";//funcionario.getSecao();
-				logger.info("secao:" + secao);
-				// localiza na tabela de lotacao
+							
+				logger.info("verificando usuario logado.:"+pr.getRemoteUser());
+				funcionario = funcionarioManager.getFuncVOPorLogin(pr.getRemoteUser());
+				//nome = "Marcos";  //funcionario.getNome();
+				logger.info("nome:" + funcionario.getNome());
 				
-				Long codLotacao = new Long(1015);//new Long(funcionario.getLotacaoCod());
-				lotacao = localidadeManager.load(codLotacao);
+				logger.info("matricula:" + funcionario.getMatricula());
+				logger.info("secao:" + funcionario.getSiglaLotacao());
 				
-			//	somente para teste
-			//  if (lotacao.getCodigo().equals(1015l)) 
-            //      lotacao.setCodigo(731l); 
-				usuarioLogin = pq.getRemoteUser();
+				//Long codLotacao = new Long(funcionario.get);
+				//lotacao = localidadeManager.load(codLotacao);
+				
 				usuarioLogado=true;
 			}
 		} else {
 			usuarioLogado = false;
 		}
-		return null;
 	}
 	
 	//ActionEvent actionEvent
@@ -88,44 +83,37 @@ public class FuncionarioBackBean extends BaseAction {
 
 
 	public String getSecao() {
-		return secao;
-	}
-
-	public void setSecao(String ses) {
-		this.secao = ses;
+		if (funcionario!=null)
+			//return funcionario.getLotacaoAtual().getDescricao();
+			return funcionario.getSiglaLotacao();
+		else 
+			return emptyStr;
 	}
 
 	public String getMatricula() {		
-		return matricula;
-	}
-
-	public void setMatricula(String matricula) {
-		this.matricula = matricula;
+		if (funcionario!=null)
+			return emptyStr + funcionario.getMatricula();
+		else 
+			return emptyStr;
 	}
 
 	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
+		if (funcionario!=null)
+			return funcionario.getNome();
+		else 
+			return emptyStr;
 	}
 
 	public boolean isUsuarioLogado() {
-		apresFuncionario();
+		consultaFuncionario();
 		return usuarioLogado;
 	}
 
-	public void setUsuarioLogado(boolean usuarioLogado) {
-		this.usuarioLogado = usuarioLogado;
-	}
-
 	public String getLogin() {
-		return login;
-	}
-
-	public void setLogin(String login) {
-		this.login = login;
+		if (funcionario!=null)
+			return funcionario.getLoginIntranet();
+		else 
+			return emptyStr;
 	}
 
 	public Localidade getLotacao() {

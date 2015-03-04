@@ -1,9 +1,14 @@
 package br.jus.jfes.sisper.session;
 
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+
 import org.jboss.logging.Logger;
 
 import br.jus.jfes.sisper.modelo.TabCep;
 
+@Stateless
+@LocalBean
 public class CepManager extends BaseDAO<TabCep, String> {
 	private static Logger logger = Logger.getLogger(CepManager.class);
 	private String expressaoHql="";
